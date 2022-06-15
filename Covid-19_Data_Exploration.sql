@@ -59,3 +59,17 @@ from
 order by
     1,
     2;
+
+--Checkout highest infection rate of a country compared to the population
+select
+    location,
+    population,
+    MAX(total_cases) as HighestInfectionCount,
+    MAX((total_cases / population)) * 100 AS PercentagePopulationInfected
+from
+    ProjectPortfolio..CovidDeaths --where location like '%russ%'
+GROUP BY
+    location,
+    population
+order by
+    4 DESC;
