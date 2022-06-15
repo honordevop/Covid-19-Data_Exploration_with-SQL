@@ -30,3 +30,18 @@ from
 order by
     1,
     2;
+
+--Exploratory Analysis
+
+--Checkout Total Cases VS Total Death stating Percentage chances of dieing if contracted covid in your country
+select
+    location,
+    date,
+    total_cases,
+    total_deaths,
+    (total_deaths / total_cases) * 100 AS DeathPercentage
+from
+    ProjectPortfolio..CovidDeaths
+order by
+    1,
+    2;
