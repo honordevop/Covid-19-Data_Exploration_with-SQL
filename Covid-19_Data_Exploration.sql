@@ -45,3 +45,17 @@ from
 order by
     1,
     2;
+
+--Total cases VS Population
+--Shows what percentage of the of pulation has covid
+select
+    location,
+    date,
+    population,
+    total_cases,
+    (total_cases / population) * 100 AS CasePerPopulationPercentage
+from
+    ProjectPortfolio..CovidDeaths
+order by
+    1,
+    2;
