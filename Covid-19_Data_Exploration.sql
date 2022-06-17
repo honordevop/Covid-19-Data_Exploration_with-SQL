@@ -86,3 +86,16 @@ GROUP BY
     location
 order by
     2 DESC;
+
+--Showing highest death count recorded based on continent
+select
+    continent,
+    MAX(cast (total_deaths as int)) as HighestDeathCount
+from
+    ProjectPortfolio..CovidDeaths
+where
+    continent is not null
+GROUP BY
+    continent
+order by
+    2 DESC;
