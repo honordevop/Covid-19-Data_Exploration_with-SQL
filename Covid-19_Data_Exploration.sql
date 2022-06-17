@@ -73,3 +73,16 @@ GROUP BY
     population
 order by
     4 DESC;
+
+--Showing highest death count recorded per each country
+select
+    location,
+    MAX(cast (total_deaths as int)) as HighestDeathCount
+from
+    ProjectPortfolio..CovidDeaths 
+where
+    continent is not null
+GROUP BY
+    location
+order by
+    2 DESC;
