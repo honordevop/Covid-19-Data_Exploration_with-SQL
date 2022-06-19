@@ -89,7 +89,7 @@ order by
 
 --Showing highest death count recorded based on continent
 select
-    continent,
+    CONTINNT,
     MAX(cast (total_deaths as int)) as HighestDeathCount
 from
     ProjectPortfolio..CovidDeaths
