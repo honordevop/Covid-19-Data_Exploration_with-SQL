@@ -101,7 +101,7 @@ order by
     2 DESC;
 
 
---Checkout global numbers
+--Applying subquery method in getting global numbers to improve accuracy
 SELECT
     date,
     SUM(new_cases) as total_cases,
@@ -116,3 +116,27 @@ GROUP BY
 ORDER BY
     1,
     2;
+
+
+--Personal Global numbers
+Select
+    SUM(population) AS world_population,
+    SUM(total_cases) AS total_world_cases,
+    SUM(total_deaths) AS total_world_deaths,
+    (SUM(total_deaths) / SUM(total_cases)) * 100 AS world_Deathpercentage
+FROM
+    (
+        SELECT
+            location,
+            population,
+            SUM(new_cases) as total_cases,
+            SUM(CAST(new_deaths as int)) as total_deaths,
+            SUM(CAST(new_deaths as int)) / SUM(New_cases) * 100 as Deathpercentage
+        from
+            ProjectPortfolio..CovidDeaths
+        where
+            continent is not null
+        GROUP BY
+            location,
+            population
+    ) AS t1;
