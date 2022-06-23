@@ -177,7 +177,7 @@ SELECT
 FROM
     PopsVac;
 
---SubQuery format
+--SubQuery format (Get total vaccinated in each country)
 Select
     Continent,
     location,
