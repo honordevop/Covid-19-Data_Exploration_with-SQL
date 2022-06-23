@@ -176,3 +176,32 @@ SELECT
     running_total_vacinated / population * 100 AS PercentageVaccinated
 FROM
     PopsVac;
+
+--SubQuery format
+Select
+    Continent,
+    location,
+    population,
+    new_vaccinations,
+    running_total_vacinated
+from
+    (
+        Select
+            cvd.continent,
+            cvv.location,
+            cvd.date,
+            cvd.population,
+            cvv.new_vaccinations,
+            SUM(cast(cvv.new_vaccinations AS bigint)) OVER (
+                PARTITION BY cvd.location
+                ORDER BY
+                    cvd.location,
+                    cvd.date
+            ) as running_total_vacinated
+        FROM
+            ProjectPortfolio..CovidDeaths AS cvd
+            JOIN ProjectPortfolio..CovidVaccinations AS cvv ON cvd.location = cvv.location
+            AND cvd.date = cvv.date
+        where
+            cvd.continent is not null --order by 2,3
+    ) AS t1;
