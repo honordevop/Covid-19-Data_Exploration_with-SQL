@@ -140,3 +140,34 @@ FROM
             location,
             population
     ) AS t1;
+
+
+-- Lookint at Total Population vs Vaccinations
+--Common Table Expression format
+With PopsVac (
+    Continent,
+    location,
+    date,
+    population,
+    new_vaccinations,
+    running_total_vacinated
+) as (
+    Select
+        cvd.continent,
+        cvv.location,
+        cvd.date,
+        cvd.population,
+        cvv.new_vaccinations,
+        SUM(cast(cvv.new_vaccinations AS bigint)) OVER (
+            PARTITION BY cvd.location
+            ORDER BY
+                cvd.location,
+                cvd.date
+        ) as running_total_vacinated
+    FROM
+        ProjectPortfolio..CovidDeaths AS cvd
+        JOIN ProjectPortfolio..CovidVaccinations AS cvv ON cvd.location = cvv.location
+        AND cvd.date = cvv.date
+    where
+        cvd.continent is not null
+)
