@@ -171,3 +171,8 @@ With PopsVac (
     where
         cvd.continent is not null
 )
+SELECT
+    *,
+    running_total_vacinated / population * 100 AS PercentageVaccinated
+FROM
+    PopsVac;
