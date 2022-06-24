@@ -205,3 +205,61 @@ from
         where
             cvd.continent is not null --order by 2,3
     ) AS t1;
+
+
+--TEMP TABLE
+DROP TABLE IF EXISTS #PeercentagePopulationVaccinated
+CREATE TABLE #PeercentagePopulationVaccinated
+(
+    continent nvarchar(255),
+    location nvarchar(255),
+    date datetime,
+    population numeric,
+    new_vaccinations numeric,
+    running_total_vacinated numeric
+)
+INSERT INTO
+    #PeercentagePopulationVaccinated
+Select
+    cvd.continent,
+    cvv.location,
+    cvd.date,
+    cvd.population,
+    cvv.new_vaccinations,
+    SUM(cast(cvv.new_vaccinations AS bigint)) OVER (
+        PARTITION BY cvd.location
+        ORDER BY
+            cvd.location,
+            cvd.date
+    ) as running_total_vacinated
+FROM
+    ProjectPortfolio..CovidDeaths AS cvd
+    JOIN ProjectPortfolio..CovidVaccinations AS cvv ON cvd.location = cvv.location
+    AND cvd.date = cvv.date
+where
+    cvd.continent is not null --order by 2,3
+SELECT
+    *,
+    running_total_vacinated / population * 100 AS PercentageVaccinated
+FROM
+    #PeercentagePopulationVaccinated;
+    Create View PeercentagePopulationVaccinated as
+Select
+    cvd.continent,
+    cvd.location,
+    cvd.date,
+    cvd.population,
+    cvv.new_vaccinations,
+    SUM(cast(cvv.new_vaccinations AS bigint)) OVER (
+        PARTITION BY cvd.location
+        ORDER BY
+            cvd.location,
+            cvd.date
+    ) as running_total_vacinated
+FROM
+    ProjectPortfolio..CovidDeaths AS cvd
+    JOIN ProjectPortfolio..CovidVaccinations AS cvv ON cvd.location = cvv.location
+    AND cvd.date = cvv.date
+where
+    cvd.continent is not null --order by 2,3
+    --DROP VIEW IF EXISTS PeercentagePopulationVaccinated
