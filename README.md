@@ -5,3 +5,9 @@
 > ### Data Source 
 
 [Our World in Data](https://ourworldindata.org/explorers/coronavirus-data-explorer)
+
+> ### Tools Used
+
+`SQL SERVER MANAGEMENT STUDIO`
+
+`MICROSOFT EXCEL`
